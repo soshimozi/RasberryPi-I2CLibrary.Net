@@ -39,6 +39,7 @@
     <Compile Include="I2CStream.cs" />
     <Compile Include="I2CStreamProvider.cs" />
     <Compile Include="IStreamProvider.cs" />
+    <Compile Include="I2CMem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

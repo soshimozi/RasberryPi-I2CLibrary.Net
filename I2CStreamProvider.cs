@@ -14,7 +14,7 @@ namespace I2CLibrary
 
         private I2CStreamProvider(int channel, int address)
         {
-            _deviceHandle = i2c_connect(channel, address);
+            _deviceHandle = bcm2835_i2c_file_open(channel, address);
         }
 
         public void Flush()
@@ -25,7 +25,7 @@ namespace I2CLibrary
         {
             var temp = new byte[length];
 
-            var readCount = i2c_read(_deviceHandle, temp, length);
+            var readCount = bcm2835_i2c_file_read(_deviceHandle, temp, length);
             if (readCount > 0)
             {
                 Array.Copy(temp, 0, buffer, offset, readCount);
@@ -38,27 +38,27 @@ namespace I2CLibrary
         {
             var temp = new byte[length];
             Array.Copy(buffer, offset, temp, 0, length);
-            i2c_write(_deviceHandle, temp, length);
+            bcm2835_i2c_file_write(_deviceHandle, temp, length);
         }
 
         public void Close()
         {
-            i2c_close(_deviceHandle);
+            bcm2835_i2c_file_close(_deviceHandle);
         }
 
         #region Imported functions
 
-        [DllImport("libi2c.so", EntryPoint = "i2c_connect")]
-        private static extern int i2c_connect(int channel, int address);
+        [DllImport("libi2c.so", EntryPoint = "bcm2835_i2c_file_open")]
+        private static extern int bcm2835_i2c_file_open(int channel, int address);
 
-        [DllImport("libi2c.so", EntryPoint = "i2c_close")]
-        private static extern void i2c_close(int handle);
+        [DllImport("libi2c.so", EntryPoint = "bcm2835_i2c_file_close")]
+        private static extern void bcm2835_i2c_file_close(int handle);
 
-        [DllImport("libi2c.so", EntryPoint = "i2c_write")]
-        private static extern int i2c_write(int handle, byte[] pbuf, int len);
+        [DllImport("libi2c.so", EntryPoint = "bcm2835_i2c_file_write")]
+        private static extern int bcm2835_i2c_file_write(int handle, byte[] pbuf, int len);
 
-        [DllImport("libi2c.so", EntryPoint = "i2c_read")]
-        private static extern int i2c_read(int handle, byte[] pbuf, int len);
+        [DllImport("libi2c.so", EntryPoint = "bcm2835_i2c_file_read")]
+        private static extern int bcm2835_i2c_file_read(int handle, byte[] pbuf, int len);
 
         #endregion
     }
