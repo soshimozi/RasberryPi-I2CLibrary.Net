@@ -10,22 +10,25 @@ namespace RaspPi
     {
         static void Main(string[] args)
         {
-            //using(var stream = new I2CStream(I2CChannel.Channel0, 0x2a))
-            //{
-            //    testCommand(stream, "L11", "LED1 on");
-	//Thread.Sleep(2000);
-          //      testCommand(stream, "L10", "LED1 off");
-	//	Thread.Sleep(2000);
-          //  }
-	I2CMem.Send(0x2a, Encoding.ASCII.GetBytes("L11"), Encoding.ASCII.GetByteCount("L11"));
+            using(var stream = new I2CStream(I2CChannel.Channel0, 0x2a))
+            {
+                testCommand(stream, "L11", "LED1 on");
+		Thread.Sleep(2000);
+                testCommand(stream, "L10", "LED1 off");
+		Thread.Sleep(2000);
+            }
+	    Console.WriteLine("Using memory interface:");
+	    Console.WriteLine("LED1 on");
+	    I2CMem.Send(0x2a, Encoding.ASCII.GetBytes("L11"), Encoding.ASCII.GetByteCount("L11"));
 
-	//	I2CMem.Send(0x2a, Encoding.ASCII.GetBytes("L11"), Encoding.ASCII.GetByteCount("L11"));
 
 		Thread.Sleep(2000);
 
-	//	I2CMem.Send(0x2a, Encoding.ASCII.GetBytes("L10"), Encoding.ASCII.GetByteCount("L10"));
+		Console.WriteLine("LED1 off");
 
-I2CMem.Send(0x2a, Encoding.ASCII.GetBytes("L10"), Encoding.ASCII.GetByteCount("L10"));
+		I2CMem.Send(0x2a, Encoding.ASCII.GetBytes("L10"), Encoding.ASCII.GetByteCount("L10"));
+
+		Thread.Sleep(2000);
 
         }
 
